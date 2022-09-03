@@ -1,11 +1,9 @@
 name: Build plugin
 
-on:
-  workflow_dispatch:
-  push:
+on:[push]
     # Sequence of patterns matched against refs/tags
-    tags:
-      - "*" # Push events to matching any tag format, i.e. 1.0, 20.15.10
+    #tags:
+     # - "*" # Push events to matching any tag format, i.e. 1.0, 20.15.10
 
 env:
   PLUGIN_NAME: logseq-pomodoro-technique
