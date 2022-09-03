@@ -28,6 +28,7 @@ This is sample that show you how to use slot ui to render block content in part 
 > the rendering of block content partly.
  
 ### Running the Sample
+
  
 - `yarn && yarn build` in terminal to install dependencies.
 - `Load unpacked plugin` in Logseq Desktop client.
