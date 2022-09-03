@@ -2,7 +2,7 @@
 This repository is a fork [logseq-plugin-samples/logseq-pomodoro-timer](https://github.com/logseq/logseq-plugin-samples/tree/master/logseq-pomodoro-timer).
 
 I mainly did the adaptation of the new version, fixed the style problem, and added the shortcut keys.
-## Pomodoro Timer Sample
+## Pomodoro Technique 
 
 What's it? https://en.wikipedia.org/wiki/Pomodoro_Technique
 
