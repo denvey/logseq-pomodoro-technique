@@ -1,14 +1,21 @@
 import '@logseq/libs'
-import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user'
+import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin'
 
 const settings: SettingSchemaDesc[] = [
   {
-    key: "emojiKeybinding",
-    description: "Keybinding to open emoji",
+    title: "Keybinding for Pomodoro Technique",
+    key: "pomodoroTechniqueKeybinding",
     type: "string",
     default: "mod+p",
-    title: "Keybinding for emoji",
+    description: "Keybinding to open Pomodoro Timer",
   },
+  {
+    title: "Pomodoro Time Length",
+    key: "emojiKeybinding",
+    type: "number",
+    default: 25,
+    description: "Set the length of your pomodoro in minutes",
+  }
 ]
 logseq.useSettingsSchema(settings);
 
@@ -17,8 +24,6 @@ logseq.useSettingsSchema(settings);
  */
 async function main () {
   // logseq.App.showMsg('hello, pomodoro timer :)')
-  const appUserConfig = await logseq.App.getUserConfigs()
-
   const genRandomStr = () => Math.random().
     toString(36).
     replace(/[^a-z]+/g, '').
@@ -83,7 +88,7 @@ async function main () {
   `)
 
   // entries
-  logseq.Editor.registerSlashCommand('🍅 Pomodoro Timer', async () => {
+  logseq.Editor.registerSlashCommand('🍅 Pomodoro Technique', async () => {
     await logseq.Editor.insertAtEditingCursor(
       `{{renderer :pomodoro_${genRandomStr()}}} `,
     )
@@ -110,6 +115,7 @@ async function main () {
     startTime, durationMins,
   }: any) {
     if (!startTime) return
+    // logseq.settings?
     const durationTime = (durationMins || 25) * 60 // default 20 minus
 
     const keepKey = `${logseq.baseInfo.id}--${pomoId}` // -${slotId}
