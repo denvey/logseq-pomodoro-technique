@@ -1,10 +1,23 @@
 import '@logseq/libs'
+import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user'
+
+const settings: SettingSchemaDesc[] = [
+  {
+    key: "emojiKeybinding",
+    description: "Keybinding to open emoji",
+    type: "string",
+    default: "mod+p",
+    title: "Keybinding for emoji",
+  },
+]
+logseq.useSettingsSchema(settings);
 
 /**
  * main entry
  */
 async function main () {
-  logseq.App.showMsg('hello, pomodoro timer :)')
+  // logseq.App.showMsg('hello, pomodoro timer :)')
+  const appUserConfig = await logseq.App.getUserConfigs()
 
   const genRandomStr = () => Math.random().
     toString(36).
@@ -75,6 +88,16 @@ async function main () {
       `{{renderer :pomodoro_${genRandomStr()}}} `,
     )
   })
+
+  // CommandShortcut
+  logseq.App.registerCommandShortcut(
+    { binding: logseq.settings?.emojiKeybinding },
+   async () => {
+    await logseq.Editor.insertAtEditingCursor(
+      `{{renderer :pomodoro_${genRandomStr()}}} `,
+    )
+   }
+  )
 
   /**
    * @param pomoId
@@ -160,6 +183,7 @@ async function main () {
     // reset slot ui
     renderTimer({ pomoId, slotId: slot, startTime, durationMins })
   })
+
 }
 
 // bootstrap

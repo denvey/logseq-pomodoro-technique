@@ -1,3 +1,7 @@
+## Repository description
+This repository is a fork [logseq-plugin-samples/logseq-pomodoro-timer](https://github.com/logseq/logseq-plugin-samples/tree/master/logseq-pomodoro-timer).
+
+I mainly did the adaptation of the new version, fixed the style problem, and added the shortcut keys.
 ## Pomodoro Timer Sample
 
 What's it? https://en.wikipedia.org/wiki/Pomodoro_Technique
@@ -24,8 +28,6 @@ This is sample that show you how to use slot ui to render block content in part 
 > the rendering of block content partly.
  
 ### Running the Sample
-
-> 🏷 Minimal version of App [0.4.6](https://github.com/logseq/logseq/releases/tag/0.4.6) !
  
 - `yarn && yarn build` in terminal to install dependencies.
 - `Load unpacked plugin` in Logseq Desktop client.
