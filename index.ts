@@ -6,12 +6,12 @@ const settings: SettingSchemaDesc[] = [
     title: "Keybinding for Pomodoro Technique",
     key: "pomodoroTechniqueKeybinding",
     type: "string",
-    default: "mod+p",
+    default: "",
     description: "Keybinding to open Pomodoro Timer",
   },
   {
     title: "Pomodoro Time Length",
-    key: "emojiKeybinding",
+    key: "pomodoroTimeLength",
     type: "number",
     default: 25,
     description: "Set the length of your pomodoro in minutes",
@@ -23,7 +23,6 @@ logseq.useSettingsSchema(settings);
  * main entry
  */
 async function main () {
-  // logseq.App.showMsg('hello, pomodoro timer :)')
   const genRandomStr = () => Math.random().
     toString(36).
     replace(/[^a-z]+/g, '').
@@ -72,10 +71,10 @@ async function main () {
     }
     
     .pomodoro-timer-btn.is-pending {
-      padding-left: 6px;
-      width: 84px;
+      padding: 0 6px;
       background-color: #f6dbdb;
       border-color: #edbdbd;
+      font-family: Helvetica,Times New Roman,Microsoft Yahei;
       color: #cd3838;
     }
     
@@ -96,7 +95,7 @@ async function main () {
 
   // CommandShortcut
   logseq.App.registerCommandShortcut(
-    { binding: logseq.settings?.emojiKeybinding },
+    { binding: logseq.settings?.pomodoroTechniqueKeybinding },
    async () => {
     await logseq.Editor.insertAtEditingCursor(
       `{{renderer :pomodoro_${genRandomStr()}}} `,
@@ -115,11 +114,23 @@ async function main () {
     startTime, durationMins,
   }: any) {
     if (!startTime) return
-    // logseq.settings?
-    const durationTime = (durationMins || 25) * 60 // default 20 minus
-
+    const durationTime = (durationMins || logseq.settings?.pomodoroTimeLength || 25) * 60 // default 20 minus
     const keepKey = `${logseq.baseInfo.id}--${pomoId}` // -${slotId}
-    const keepOrNot = () => logseq.App.queryElementById(keepKey)
+    // const keepOrNot = () => logseq.App.queryElementById(keepKey)
+    
+    const provideUi = (isDone: boolean, time: string) => {
+      logseq.provideUI({
+        key: pomoId,
+        slot: slotId,
+        reset: true,
+        template: `
+        ${!isDone ?
+          `<a class="pomodoro-timer-btn is-pending">🍅 ${time}</a>` :
+          `<a class="pomodoro-timer-btn is-done">🍅 ✅</a>`
+        }
+      `,
+      })
+    }
 
     function _render (init: boolean) {
       const nowTime = Date.now()
@@ -129,29 +140,11 @@ async function main () {
         const offset = durationTime - offsetTime
         const minus = Math.floor(offset / 60)
         const secs = offset % 60
-        return `${(minus < 10 ? '0' : '') + minus}:${(secs < 10 ? '0' : '') +
-        secs}`
+        return `${(minus < 10 ? '0' : '') + minus}:${(secs < 10 ? '0' : '') + secs}`
       }
-      const provideUi = () => logseq.provideUI({
-        key: pomoId,
-        slot: slotId,
-        reset: true,
-        template: `
-        ${!isDone ?
-          `<a class="pomodoro-timer-btn is-pending">
-            🍅 ${humanTime()}
-          </a>` :
-          `<a class="pomodoro-timer-btn is-done">
-            🍅 ✅
-          </a>`
-        }
-      `,
-      })
-
-      Promise.resolve(init || keepOrNot()).then((res) => {
+      Promise.resolve(init || logseq.App.queryElementById(keepKey)).then((res) => {
         if (res) {
-          provideUi()
-
+          provideUi(isDone, humanTime())
           !isDone && setTimeout(() => {
             _render(false)
           }, 1000)
@@ -168,7 +161,6 @@ async function main () {
     const identity = type.split('_')[1]?.trim()
     if (!identity) return
     const pomoId = 'pomodoro-timer-start_' + identity
-
     if (!startTime?.trim()) {
       return logseq.provideUI({
         key: pomoId,
