@@ -13,6 +13,7 @@ I mainly did the adaptation of the new version, fixed the style problem, and add
 > 本插件支持在block中加入番茄时钟，可以通过消耗的番茄时钟个数计算TODO的完成时间
 
 ![demo](./images/demo.gif)
+![demo1](./images/demo1.png)
 
 ### 配置项
 ![配置项](./images/option.png)
