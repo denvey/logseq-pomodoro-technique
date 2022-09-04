@@ -9,30 +9,18 @@ What's it? https://en.wikipedia.org/wiki/Pomodoro_Technique
 
 This is sample that show you how to use slot ui to render block content in part :)
 
-### Demo
+### Use
+> This is sample that show you how to use slot ui to render block content in part :), and can calculate the completion time of TODO by the number of pomodoro time consumed
 
-![demo](./demo.gif)
+![demo](./images/demo.gif)
 
-### API
 
-[![npm version](https://badge.fury.io/js/%40logseq%2Flibs.svg)](https://badge.fury.io/js/%40logseq%2Flibs)
+### Options
 
-##### Logseq.App
+![configuration-item](./images/option.png)
+1. configure the open shortcut key
+2. configure the default length of the tomato clock, the default is 25 minutes
 
-- `registerSlashCommand: (tag: string, action: BlockCommandCallback | Array<SlashCommandAction>) => boolean`
-- `onMacroRendererSlotted: IUserSlotHook<{ payload: { arguments: Array<string>, uuid: string, [key: string]: any } }>`
-
-> ⚠️ The current implementation may have performance issues,
-> especially when there are too many running timer instances.
-> That's because time ticker needs messaging frequently between
-> host and plugin sandbox. We are exploring better solutions for
-> the rendering of block content partly.
- 
-### Running the Sample
-
- 
-- `yarn && yarn build` in terminal to install dependencies.
-- `Load unpacked plugin` in Logseq Desktop client.
 
 ### License
 MIT

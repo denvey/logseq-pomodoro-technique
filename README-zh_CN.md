@@ -9,32 +9,16 @@ I mainly did the adaptation of the new version, fixed the style problem, and add
 
 [如何使用？](https://www.zhihu.com/question/20189826)
 
-This is sample that show you how to use slot ui to render block content in part :)
+### 使用
+> 本插件支持在block中加入番茄时钟，可以通过消耗的番茄时钟个数计算TODO的完成时间
 
-### Demo
+![demo](./images/demo.gif)
 
-![demo](./demo.gif)
+### 配置项
+![配置项](./images/option.png)
+1. 配置打开快捷键
+2. 配置番茄时钟默认时长，默认为25分钟
 
-### API
-
-[![npm version](https://badge.fury.io/js/%40logseq%2Flibs.svg)](https://badge.fury.io/js/%40logseq%2Flibs)
-
-##### Logseq.App
-
-- `registerSlashCommand: (tag: string, action: BlockCommandCallback | Array<SlashCommandAction>) => boolean`
-- `onMacroRendererSlotted: IUserSlotHook<{ payload: { arguments: Array<string>, uuid: string, [key: string]: any } }>`
-
-> ⚠️ The current implementation may have performance issues,
-> especially when there are too many running timer instances.
-> That's because time ticker needs messaging frequently between
-> host and plugin sandbox. We are exploring better solutions for
-> the rendering of block content partly.
- 
-### Running the Sample
-
- 
-- `yarn && yarn build` in terminal to install dependencies.
-- `Load unpacked plugin` in Logseq Desktop client.
 
 ### License
 MIT
