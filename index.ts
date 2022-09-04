@@ -66,7 +66,7 @@ async function main () {
     }
     
     .pomodoro-timer-btn.is-start {
-      padding: 1px 6px;
+      padding: 0 6px;
       cursor: pointer;
     }
     
