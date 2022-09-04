@@ -6,7 +6,7 @@ const settings: SettingSchemaDesc[] = [
     title: "Keybinding for Pomodoro Technique",
     key: "pomodoroTechniqueKeybinding",
     type: "string",
-    default: "",
+    default: "mod+o",
     description: "Keybinding to open Pomodoro Timer",
   },
   {
@@ -141,6 +141,19 @@ async function main () {
         const minus = Math.floor(offset / 60)
         const secs = offset % 60
         return `${(minus < 10 ? '0' : '') + minus}:${(secs < 10 ? '0' : '') + secs}`
+      }
+      const provideUi = (isDone: boolean, time: string) => {
+        logseq.provideUI({
+          key: pomoId,
+          slot: slotId,
+          reset: true,
+          template: `
+          ${!isDone ?
+            `<a class="pomodoro-timer-btn is-pending">🍅 ${time}</a>` :
+            `<a class="pomodoro-timer-btn is-done">🍅 ✅</a>`
+          }
+        `,
+        })
       }
       Promise.resolve(init || logseq.App.queryElementById(keepKey)).then((res) => {
         if (res) {
