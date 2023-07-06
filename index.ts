@@ -167,6 +167,9 @@ async function main () {
         const secs = offset % 60
         return `${(minus < 10 ? '0' : '') + minus}:${(secs < 10 ? '0' : '') + secs}`
       }
+      if(!init && isDone){
+        logseq.UI.showMsg("A 🍅 is Done")
+      }
       const provideUi = (isDone: boolean, time: string) => {
         logseq.provideUI({
           key: pomoId,
