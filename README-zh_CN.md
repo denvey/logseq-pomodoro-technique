@@ -17,9 +17,9 @@ I mainly did the adaptation of the new version, fixed the style problem, and add
 
 ### 配置项
 ![配置项](./images/option.png)
-1. 配置打开快捷键
+1. 配置打开快捷键，默认为`alt+o`
 2. 配置番茄时钟默认时长，默认为25分钟
-
+3. 可以修改每个番茄钟的时间
 
 ### License
 MIT

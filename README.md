@@ -20,6 +20,7 @@ This is sample that show you how to use slot ui to render block content in part 
 ![configuration-item](./images/option.png)
 1. configure the open shortcut key
 2. configure the default length of the tomato clock, the default is 25 minutes
+3. Can modify each tomato clock time
 
 
 ### License
