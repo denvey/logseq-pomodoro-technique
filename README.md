@@ -25,7 +25,7 @@ This is sample that show you how to use slot ui to render block content in part 
 ### 贡献者
 
 <a href="https://github.com/eryajf/learn-github/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=eryajf/learn-github" />
+  <img src="https://contrib.rocks/image?repo=denvey/logseq-pomodoro-technique" />
 </a>
 
 
