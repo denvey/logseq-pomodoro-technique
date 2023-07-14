@@ -6,7 +6,7 @@ const settings: SettingSchemaDesc[] = [
     title: "Keybinding for Pomodoro Technique",
     key: "pomodoroTechniqueKeybinding",
     type: "string",
-    default: "alt+o",
+    default: "mod+o",
     description: "Keybinding to open Pomodoro Timer",
   },
   {
