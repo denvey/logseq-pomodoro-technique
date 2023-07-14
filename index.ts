@@ -6,7 +6,7 @@ const settings: SettingSchemaDesc[] = [
     title: "Keybinding for Pomodoro Technique",
     key: "pomodoroTechniqueKeybinding",
     type: "string",
-    default: "mod+o",
+    default: "alt+o",
     description: "Keybinding to open Pomodoro Timer",
   },
   {
@@ -31,30 +31,53 @@ async function main () {
   // models
   logseq.provideModel({
     async startPomoTimer (e: any) {
-      const { pomoId, slotId, blockUuid } = e.dataset
+      const { pomoId, slotId, blockUuid,durationMins } = e.dataset
       const startTime = Date.now()
-
       const block = await logseq.Editor.getBlock(blockUuid)
-      const flag = `{{renderer :pomodoro_${pomoId}`
-      const newContent = block?.content?.replace(`${flag}}}`,
-        `${flag},${startTime}}}`)
+      const content = block?.content || ""
+      if(!content) return
+
+      const regExp = new RegExp(`\\pomodoro_${pomoId}(,\\d+)*`, 'g');
+
+      let findData = content.match(regExp)
+      if(!findData) return
+      let flag=findData[0]
+      let params = flag?.split(",")
+
+      let timestamp = Date.now()
+      let newFlag:any;
+      switch(params.length){
+        case 1:
+          newFlag=`${params[0]},${durationMins},${timestamp}`
+          break;
+        case 2:
+          newFlag=`${params[0]},${params[1]},${timestamp}`
+          break;
+        case 3:
+          newFlag=`${params[0]},${params[1]},${params[2]}`
+          break;
+      }
+      
+      let newContent = content.replace(flag,newFlag)
       if (!newContent) return
+
       await logseq.Editor.updateBlock(blockUuid, newContent)
-      renderTimer({ pomoId, slotId, startTime })
+      renderTimer({ pomoId, slotId, startTime})
+  
     },
   })
 
   logseq.provideStyle(`
     .pomodoro-timer-btn {
-       border: 1px solid var(--ls-border-color); 
-       white-space: initial; 
-       padding: 0 4px; 
-       font-size: 15px;
-       border-radius: 4px; 
-       user-select: none;
-       cursor: default;
-       display: flex;
-       align-content: center;
+      border: 1px solid var(--ls-border-color); 
+      white-space: initial; 
+      padding: 0 4px; 
+      font-size: 15px;
+      border-radius: 4px; 
+      user-select: none;
+      cursor: default;
+      display: flex;
+      align-content: center;
     }
     
     .pomodoro-timer-btn.is-start:hover {
@@ -88,19 +111,21 @@ async function main () {
 
   // entries
   logseq.Editor.registerSlashCommand('🍅 Pomodoro Technique', async () => {
+    const durationMins = logseq.settings?.pomodoroTimeLength || 25
     await logseq.Editor.insertAtEditingCursor(
-      `{{renderer :pomodoro_${genRandomStr()}}} `,
+      `{{renderer :pomodoro_${genRandomStr()},${durationMins}}} `,
     )
   })
 
   // CommandShortcut
   logseq.App.registerCommandShortcut(
-    { binding: logseq.settings?.pomodoroTechniqueKeybinding },
-   async () => {
-    await logseq.Editor.insertAtEditingCursor(
-      `{{renderer :pomodoro_${genRandomStr()}}} `,
-    )
-   }
+    { binding: logseq.settings?.pomodoroTechniqueKeybinding || "alt+o" },
+    async () => {
+      const durationMins = logseq.settings?.pomodoroTimeLength || 25
+      await logseq.Editor.insertAtEditingCursor(
+        `{{renderer :pomodoro_${genRandomStr()},${durationMins}}} `,
+      )
+    }
   )
 
   /**
@@ -142,6 +167,9 @@ async function main () {
         const secs = offset % 60
         return `${(minus < 10 ? '0' : '') + minus}:${(secs < 10 ? '0' : '') + secs}`
       }
+      if(!init && isDone){
+        logseq.UI.showMsg("A 🍅 is Done")
+      }
       const provideUi = (isDone: boolean, time: string) => {
         logseq.provideUI({
           key: pomoId,
@@ -169,10 +197,13 @@ async function main () {
   }
 
   logseq.App.onMacroRendererSlotted(({ slot, payload }) => {
-    const [type, startTime, durationMins] = payload.arguments
+    let [type,durationMins, startTime] = payload.arguments
     if (!type?.startsWith(':pomodoro_')) return
     const identity = type.split('_')[1]?.trim()
     if (!identity) return
+    if (!durationMins){
+      durationMins = durationMins || logseq.settings?.pomodoroTimeLength || 25
+    }
     const pomoId = 'pomodoro-timer-start_' + identity
     if (!startTime?.trim()) {
       return logseq.provideUI({
@@ -184,6 +215,7 @@ async function main () {
           data-slot-id="${slot}" 
           data-pomo-id="${identity}"
           data-block-uuid="${payload.uuid}"
+          data-duration-mins="${durationMins}"
           data-on-click="startPomoTimer">
           🍅 START
           </button>
