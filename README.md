@@ -18,11 +18,11 @@ This is sample that show you how to use slot ui to render block content in part 
 ### Options
 
 ![configuration-item](./images/option.png)
-1. configure the open shortcut key
+1. configure the open shortcut key, this default is `mod+o`
 2. configure the default length of the tomato clock, the default is 25 minutes
 3. Can modify each tomato clock time
 
-### 贡献者
+### Contributor
 
 <a href="https://github.com/eryajf/learn-github/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=denvey/logseq-pomodoro-technique" />
