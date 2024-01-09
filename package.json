@@ -1,6 +1,6 @@
 {
   "name": "logseq-pomodoro-technique",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A joyful pomodoro timer for block task item 🍅",
   "author": "denvey",
   "license": "MIT",
@@ -10,8 +10,8 @@
     "build": "parcel build --public-url . --no-source-maps index.html"
   },
   "devDependencies": {
-    "@logseq/libs": "^0.0.15",
-    "parcel": "^2.0.0"
+    "@logseq/libs": "^0.0.17",
+    "parcel": "^2.11.0"
   },
   "dependencies": {},
   "logseq": {

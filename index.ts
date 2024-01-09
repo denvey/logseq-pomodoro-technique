@@ -183,7 +183,7 @@ async function main () {
         `,
         })
       }
-      Promise.resolve(init || logseq.App.queryElementById(keepKey)).then((res) => {
+      Promise.resolve(init || logseq.UI.queryElementById(keepKey)).then((res) => {
         if (res) {
           provideUi(isDone, humanTime())
           !isDone && setTimeout(() => {
