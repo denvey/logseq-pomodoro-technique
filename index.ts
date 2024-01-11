@@ -119,7 +119,7 @@ async function main () {
 
   // CommandShortcut
   logseq.App.registerCommandShortcut(
-    { binding: logseq.settings?.pomodoroTechniqueKeybinding || "alt+o" },
+    { binding: logseq.settings?.pomodoroTechniqueKeybinding as string|| "alt+o" },
     async () => {
       const durationMins = logseq.settings?.pomodoroTimeLength || 25
       await logseq.Editor.insertAtEditingCursor(
@@ -183,7 +183,7 @@ async function main () {
         `,
         })
       }
-      Promise.resolve(init || logseq.App.queryElementById(keepKey)).then((res) => {
+      Promise.resolve(init || logseq.UI.queryElementById(keepKey)).then((res) => {
         if (res) {
           provideUi(isDone, humanTime())
           !isDone && setTimeout(() => {
@@ -202,7 +202,7 @@ async function main () {
     const identity = type.split('_')[1]?.trim()
     if (!identity) return
     if (!durationMins){
-      durationMins = durationMins || logseq.settings?.pomodoroTimeLength || 25
+      durationMins = durationMins || logseq.settings?.pomodoroTimeLength as string || "25"
     }
     const pomoId = 'pomodoro-timer-start_' + identity
     if (!startTime?.trim()) {
